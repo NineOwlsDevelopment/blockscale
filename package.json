@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "cd backend && npm install && npm start",
-    "dev": "cd backend && nodemon index.js"
+    "dev": "cd backend && nodemon index.js",
+    "migrate": "cd backend && npx prisma migrate dev --name init && npx prisma generate"
   },
   "dependencies": {
     "copyfiles": "^2.4.1"
