@@ -250,6 +250,10 @@ const Card = styled.div`
     border-radius: 5px;
     font-family: 'Roboto', sans-serif;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+
+    @media (max-width: 768px) {
+        height: fit-content;
+    }
 `;
 
 // HEADER
