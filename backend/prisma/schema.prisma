@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String   @id @default(uuid())
+  wallet_address String   @unique
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  Mints          Mint[]
+  Launch         Launch[]
+}
+
+model Launch {
+  id             String   @id @default(uuid())
+  mint_address   String   @unique
+  owner_address  String   @default("")
+  image          String   @default("")
+  name           String   @unique
+  symbol         String   @unique
+  description    String?  @db.VarChar(500)
+  max_supply     Decimal  @default(1)
+  current_supply Decimal  @default(0)
+  premint        Int      @default(0)
+  decimals       Int      @default(0)
+  price          BigInt   @default(100000000)
+  start_date     DateTime @default(now())
+  end_date       DateTime @default(now())
+  status         String   @default("upcoming")
+  website        String?
+  twitter        String?
+  telegram       String?
+  discord        String?
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  user           User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id        String
+  Mints          Mint[]
+}
+
+model Mint {
+  id         String   @id @default(uuid())
+  amount     Decimal
+  price      BigInt
+  txid_in    String   @unique
+  txid_out   String   @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  launch     Launch   @relation(fields: [launch_id], references: [id], onDelete: Cascade)
+  user_id    String
+  launch_id  String
+}
+
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String
+  expiresAt DateTime
+}
