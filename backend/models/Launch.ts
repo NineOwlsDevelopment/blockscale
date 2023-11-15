@@ -100,7 +100,7 @@ export default class Launch {
   ) {
     try {
       const solanaUrl: string = process.env.SOLANA_RPC || "";
-      const connection: Connection = new Connection(solanaUrl, "confirmed");
+      const connection: Connection = new Connection(solanaUrl, "finalized");
       const keypair = Keypair.fromSecretKey(
         bs58.decode(process.env.HOT_WALLET_SECRET || "")
       );
@@ -166,7 +166,7 @@ export default class Launch {
       if (!decimals) throw new Error("Decimals is required.");
 
       const solanaUrl: string = process.env.SOLANA_RPC || "";
-      const connection: Connection = new Connection(solanaUrl, "confirmed");
+      const connection: Connection = new Connection(solanaUrl, "finalized");
 
       const keypair = Keypair.fromSecretKey(
         bs58.decode(process.env.HOT_WALLET_SECRET || "")
@@ -214,7 +214,7 @@ export default class Launch {
     try {
       const connection = new Connection(
         process.env.SOLANA_RPC || "",
-        "confirmed"
+        "finalized"
       );
 
       const launch_fee = Number(process.env.LAUNCH_FEE) * LAMPORTS_PER_SOL;
@@ -241,7 +241,7 @@ export default class Launch {
       let parsedTx: any = null;
 
       const interval = setInterval(async () => {
-        parsedTx = await connection.getParsedTransaction(tx_hash);
+        parsedTx = await connection.getParsedTransaction(tx_hash, "finalized");
 
         if (parsedTx) {
           clearInterval(interval);

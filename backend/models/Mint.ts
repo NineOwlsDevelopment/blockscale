@@ -51,7 +51,7 @@ export default class Mint {
     try {
       const connection = new Connection(
         process.env.SOLANA_RPC || "",
-        "confirmed"
+        "finalized"
       );
 
       const new_tx: any = Transaction.from(signature);
@@ -76,7 +76,7 @@ export default class Mint {
       let parsedTx: any = null;
 
       const interval = setInterval(async () => {
-        parsedTx = await connection.getParsedTransaction(tx_hash);
+        parsedTx = await connection.getParsedTransaction(tx_hash, "finalized");
 
         if (parsedTx) {
           clearInterval(interval);
