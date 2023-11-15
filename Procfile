@@ -1,1 +1,1 @@
-npm run migrate
+release: npm run migrate
