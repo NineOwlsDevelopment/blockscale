@@ -9,7 +9,7 @@ const rateLimiter = ExpressRateLimit({
   max: 60, // limit each IP to 60 requests per minute
 });
 
-app.set("trust proxy", true);
+app.set("trust proxy", 1);
 app.use("/api/auth", rateLimiter, route_auth);
 app.use("/api/users", rateLimiter, route_user);
 app.use("/api/launches", rateLimiter, route_launch);
