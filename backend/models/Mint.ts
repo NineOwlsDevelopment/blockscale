@@ -49,7 +49,6 @@ export default class Mint {
     total: number
   ) {
     try {
-      console.log("Total: ", total);
       const connection = new Connection(
         process.env.SOLANA_RPC || "",
         "confirmed"
@@ -63,22 +62,38 @@ export default class Mint {
 
       const latestBlockHash = await connection.getLatestBlockhash();
 
-      await connection.confirmTransaction({
+      const is_confirmed = await connection.confirmTransaction({
         blockhash: latestBlockHash.blockhash,
         lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
         signature: tx_hash,
       });
 
-      // Get transaction instructions and parse them to get the source and destination
-      const tx_instructions = [];
-      const parsedTx: any = await connection.getParsedTransaction(tx_hash);
-      const tx_count = parsedTx?.transaction.message.instructions.length;
-
-      for (let i = 0; i < tx_count; i++) {
-        tx_instructions.push(
-          parsedTx?.transaction.message.instructions[i].parsed.info
-        );
+      if (!is_confirmed) {
+        throw new Error("Transaction not confirmed.");
       }
+
+      // wait for transaction to be confirmed
+      let parsedTx: any = null;
+
+      const interval = setInterval(async () => {
+        parsedTx = await connection.getParsedTransaction(tx_hash);
+
+        if (parsedTx) {
+          clearInterval(interval);
+        }
+      }, 1000);
+
+      while (!parsedTx) {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+      // end wait for transaction to be confirmed
+
+      const tx_instructions = [];
+      const instructions = parsedTx?.transaction.message.instructions;
+      tx_instructions.push(instructions[instructions.length - 2].parsed.info);
+      tx_instructions.push(instructions[instructions.length - 1].parsed.info);
+
+      // console.log(tx_instructions);
 
       const from_key = tx_instructions[0].source;
       const to_key = tx_instructions[0].destination;
@@ -108,12 +123,12 @@ export default class Mint {
         throw new Error("Invalid TX. Fee + Amount does not match total.");
       }
 
-      console.log("Signature: ", tx_hash);
-      console.log("From: ", from_key.toString());
-      console.log("To: ", to_key.toString());
-      console.log("Fee Key: ", fee_key.toString());
-      console.log("Fee Amount: ", fee);
-      console.log("Amount", amount);
+      // console.log("Signature: ", tx_hash);
+      // console.log("From: ", from_key.toString());
+      // console.log("To: ", to_key.toString());
+      // console.log("Fee Key: ", fee_key.toString());
+      // console.log("Fee Amount: ", fee);
+      // console.log("Amount", amount);
 
       return tx_hash;
     } catch (error: any) {

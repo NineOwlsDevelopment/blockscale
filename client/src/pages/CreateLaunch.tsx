@@ -90,6 +90,8 @@ export default function CreateLaunch() {
         } catch (err) {
             setLoading(false);
             console.log(err);
+            toast.error('Error signing transaction');
+            return null;
         }
     };
 

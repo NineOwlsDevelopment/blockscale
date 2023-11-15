@@ -28,10 +28,8 @@ const App: FC = () => {
 export default App;
 
 const Context: FC<{ children: ReactNode }> = ({ children }) => {
-    const network =
-        process.env.REACT_APP_NETWORK === 'devnet' ? WalletAdapterNetwork.Devnet : WalletAdapterNetwork.Mainnet;
-
-    const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+    const network = process.env.REACT_APP_NETWORK || WalletAdapterNetwork.Devnet;
+    const endpoint = process.env.REACT_APP_SOLANA_RPC || clusterApiUrl(network as WalletAdapterNetwork);
 
     const wallets = useMemo(
         () => [new PhantomWalletAdapter(), new SolflareWalletAdapter(), new SalmonWalletAdapter()],

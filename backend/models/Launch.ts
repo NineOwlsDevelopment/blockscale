@@ -227,22 +227,44 @@ export default class Launch {
 
       const latestBlockHash = await connection.getLatestBlockhash();
 
-      await connection.confirmTransaction({
+      const is_confirmed = await connection.confirmTransaction({
         blockhash: latestBlockHash.blockhash,
         lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
         signature: tx_hash,
       });
 
-      // Get transaction instructions and parse them to get the source and destination
-      const tx_instructions = [];
-      const parsedTx: any = await connection.getParsedTransaction(tx_hash);
-      const tx_count = parsedTx?.transaction.message.instructions.length;
-
-      for (let i = 0; i < tx_count; i++) {
-        tx_instructions.push(
-          parsedTx?.transaction.message.instructions[i].parsed.info
-        );
+      if (!is_confirmed) {
+        throw new Error("Transaction not confirmed.");
       }
+
+      // wait for transaction to be confirmed
+      let parsedTx: any = null;
+
+      const interval = setInterval(async () => {
+        parsedTx = await connection.getParsedTransaction(tx_hash);
+
+        if (parsedTx) {
+          clearInterval(interval);
+        }
+      }, 1000);
+
+      while (!parsedTx) {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+      // end wait for transaction to be confirmed
+
+      // const tx_count = parsedTx?.transaction.message.instructions.length;
+      // const account_keys = parsedTx?.transaction.message.accountKeys;
+
+      // console.log(parsedTx);
+      // console.log(tx_count);
+      // console.log(account_keys);
+      // console.log(instructions[instructions.length - 1]);
+      // console.log(instructions);
+
+      const tx_instructions = [];
+      const instructions = parsedTx?.transaction.message.instructions;
+      tx_instructions.push(instructions[instructions.length - 1].parsed.info);
 
       const from_key = tx_instructions[0].source;
       const to_key = tx_instructions[0].destination;

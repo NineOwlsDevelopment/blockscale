@@ -40,8 +40,6 @@ export default function ConnectWallet() {
         if (res.status === 201 || res.status === 200) {
             socket.connect();
 
-            console.log(res.data);
-
             return setUser({
                 id: res.data.id,
                 wallet_address: res.data.wallet_address,
