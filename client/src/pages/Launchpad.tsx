@@ -220,8 +220,6 @@ export default function Launchpad() {
                 return;
             }
 
-            console.log(res.data);
-
             setLaunch(res.data);
         };
 
