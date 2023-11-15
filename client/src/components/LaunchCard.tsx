@@ -96,14 +96,16 @@ export default function LaunchCard({ launch }: any) {
     }, [launch.start_date, launch.end_date]);
 
     return (
-        <Card>
-            <CardHeader>
-                <CardHeaderContainer>
-                    <CardHeaderLeft>
-                        <img src={`${process.env.REACT_APP_AWS_BASE_URL}${launch.image}`} alt="token_image" />
-                        <span>{launch.name}</span>
-                    </CardHeaderLeft>
-                    {/* 
+        <>
+            {launch.id && (
+                <Card>
+                    <CardHeader>
+                        <CardHeaderContainer>
+                            <CardHeaderLeft>
+                                <img src={`${process.env.REACT_APP_AWS_BASE_URL}${launch.image}`} alt="token_image" />
+                                <span>{launch.name}</span>
+                            </CardHeaderLeft>
+                            {/* 
                     <CardHeaderRight>
                         <CardHeaderRightDiv>
                             <span>Price:</span>
@@ -115,121 +117,123 @@ export default function LaunchCard({ launch }: any) {
                             <span>10M BLS</span>
                         </CardHeaderRightDiv>
                     </CardHeaderRight> */}
-                </CardHeaderContainer>
-            </CardHeader>
+                        </CardHeaderContainer>
+                    </CardHeader>
 
-            <CardBody>
-                <CardBodyContainer>
-                    <CardBodyItem>
-                        <span>Max Supply:</span>
-                        <span>{Number(launch.max_supply).toLocaleString('en-US')}</span>
-                    </CardBodyItem>
+                    <CardBody>
+                        <CardBodyContainer>
+                            <CardBodyItem>
+                                <span>Max Supply:</span>
+                                <span>{Number(launch?.max_supply).toLocaleString('en-US')}</span>
+                            </CardBodyItem>
 
-                    <CardBodyItem>
-                        <span>Price (1 {launch.symbol}):</span>
-                        <span>{launch.price / LAMPORTS_PER_SOL} SOL</span>
-                    </CardBodyItem>
+                            <CardBodyItem>
+                                <span>Price (1 {launch?.symbol}):</span>
+                                <span>{launch?.price / LAMPORTS_PER_SOL} SOL</span>
+                            </CardBodyItem>
 
-                    <CardBodyItem>
-                        <span>Progress:</span>
-                        <Box
-                            sx={{
-                                width: '100%',
-                                margin: 'auto',
-                                position: 'relative',
-                            }}
-                        >
-                            <LinearProgress
-                                variant="determinate"
-                                value={(launch.current_supply / Number(launch.max_supply)) * 100}
-                                sx={{
-                                    height: 15,
-                                    borderRadius: 1,
-                                    [`&.${linearProgressClasses.colorPrimary}`]: {
-                                        backgroundColor: '#4b4b4b',
-                                    },
-                                    [`& .${linearProgressClasses.bar}`]: {
-                                        borderRadius: 1,
-                                        background: 'linear-gradient(90deg, #038518 0%, #0fb300 100%)',
-                                    },
-                                }}
-                            />
-
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    width: '100%',
-                                    zIndex: 10,
-                                    position: 'absolute',
-                                    top: '50%',
-                                    left: '50%',
-                                    transform: 'translate(-50%, -50%)',
-                                    fontSize: '0.7rem',
-                                    fontWeight: 'bold',
-                                    color: 'white',
-                                }}
-                            >
-                                {launch?.current_supply.toLocaleString('en-US')} /{' '}
-                                {launch?.max_supply.toLocaleString('en-US')}
-                            </div>
-                        </Box>
-                    </CardBodyItem>
-
-                    <CardBodyItem>
-                        <span>Socials:</span>
-                        <CardBodySocialDiv>
-                            {launch.website && (
-                                <BsGlobe
-                                    onClick={(event) => {
-                                        handleSocialLinkClick(event, launch.website);
+                            <CardBodyItem>
+                                <span>Progress:</span>
+                                <Box
+                                    sx={{
+                                        width: '100%',
+                                        margin: 'auto',
+                                        position: 'relative',
                                     }}
-                                />
-                            )}
+                                >
+                                    <LinearProgress
+                                        variant="determinate"
+                                        value={(launch?.current_supply / Number(launch?.max_supply)) * 100}
+                                        sx={{
+                                            height: 15,
+                                            borderRadius: 1,
+                                            [`&.${linearProgressClasses.colorPrimary}`]: {
+                                                backgroundColor: '#4b4b4b',
+                                            },
+                                            [`& .${linearProgressClasses.bar}`]: {
+                                                borderRadius: 1,
+                                                background: 'linear-gradient(90deg, #038518 0%, #0fb300 100%)',
+                                            },
+                                        }}
+                                    />
 
-                            {launch.twitter && (
-                                <TwitterIcon
-                                    onClick={(event) => {
-                                        handleSocialLinkClick(event, launch.twitter);
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            width: '100%',
+                                            zIndex: 10,
+                                            position: 'absolute',
+                                            top: '50%',
+                                            left: '50%',
+                                            transform: 'translate(-50%, -50%)',
+                                            fontSize: '0.7rem',
+                                            fontWeight: 'bold',
+                                            color: 'white',
+                                        }}
+                                    >
+                                        {launch?.current_supply?.toLocaleString('en-US')} /{' '}
+                                        {launch?.max_supply?.toLocaleString('en-US')}
+                                    </div>
+                                </Box>
+                            </CardBodyItem>
+
+                            <CardBodyItem>
+                                <span>Socials:</span>
+                                <CardBodySocialDiv>
+                                    {launch?.website && (
+                                        <BsGlobe
+                                            onClick={(event) => {
+                                                handleSocialLinkClick(event, launch.website);
+                                            }}
+                                        />
+                                    )}
+
+                                    {launch?.twitter && (
+                                        <TwitterIcon
+                                            onClick={(event) => {
+                                                handleSocialLinkClick(event, launch.twitter);
+                                            }}
+                                        />
+                                    )}
+
+                                    {launch?.discord && (
+                                        <DiscordIcon
+                                            onClick={(event) => {
+                                                handleSocialLinkClick(event, launch.discord);
+                                            }}
+                                        />
+                                    )}
+                                </CardBodySocialDiv>
+                            </CardBodyItem>
+                        </CardBodyContainer>
+                    </CardBody>
+
+                    <CardFooter>
+                        <CardFooterContainer>
+                            <CardFooterLeft>
+                                <CardFooterLeftDiv>
+                                    <span>{getLaunchStatus()}</span>
+                                    <span>{countdown}</span>
+                                </CardFooterLeftDiv>
+                            </CardFooterLeft>
+
+                            <CardFooterRight>
+                                <button
+                                    onClick={() => {
+                                        handleClick(`${launch.id}`);
                                     }}
-                                />
-                            )}
-
-                            {launch.discord && (
-                                <DiscordIcon
-                                    onClick={(event) => {
-                                        handleSocialLinkClick(event, launch.discord);
-                                    }}
-                                />
-                            )}
-                        </CardBodySocialDiv>
-                    </CardBodyItem>
-                </CardBodyContainer>
-            </CardBody>
-
-            <CardFooter>
-                <CardFooterContainer>
-                    <CardFooterLeft>
-                        <CardFooterLeftDiv>
-                            <span>{getLaunchStatus()}</span>
-                            <span>{countdown}</span>
-                        </CardFooterLeftDiv>
-                    </CardFooterLeft>
-
-                    <CardFooterRight>
-                        <button
-                            onClick={() => {
-                                handleClick(`${launch.id}`);
-                            }}
-                        >
-                            View
-                        </button>
-                    </CardFooterRight>
-                </CardFooterContainer>
-            </CardFooter>
-        </Card>
+                                >
+                                    View
+                                </button>
+                            </CardFooterRight>
+                        </CardFooterContainer>
+                    </CardFooter>
+                </Card>
+            )}
+        </>
     );
 }
 

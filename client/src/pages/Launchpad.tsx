@@ -250,266 +250,279 @@ export default function Launchpad() {
     }, []);
 
     return (
-        <Container>
-            <ContainerLeft>
-                <LaunchDetails>
-                    <LaunchDetailsHeader>
-                        <LaunchDetailsHeaderLeft>
-                            <div>
-                                <img src={`${process.env.REACT_APP_AWS_BASE_URL}${launch?.image}`} alt="token_image" />
-                            </div>
-
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'flex-start',
-                                    justifyContent: 'flex-start',
-                                    gap: '10px',
-                                    fontSize: '1.5rem',
-                                }}
-                            >
-                                <span>
-                                    {launch?.name} [{launch.symbol}]
-                                </span>
-
-                                <CardBodySocialDiv
-                                    style={{
-                                        display: 'flex',
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        gap: '10px',
-                                        fontSize: '1rem',
-                                    }}
-                                >
-                                    {launch?.website && (
-                                        <BsGlobe
-                                            onClick={(event) => {
-                                                handleSocialLinkClick(event, launch.website);
-                                            }}
+        <>
+            {launch.id && (
+                <Container>
+                    <ContainerLeft>
+                        <LaunchDetails>
+                            <LaunchDetailsHeader>
+                                <LaunchDetailsHeaderLeft>
+                                    <div>
+                                        <img
+                                            src={`${process.env.REACT_APP_AWS_BASE_URL}${launch?.image}`}
+                                            alt="token_image"
                                         />
-                                    )}
+                                    </div>
 
-                                    {launch?.twitter && (
-                                        <TwitterIcon
-                                            onClick={(event) => {
-                                                handleSocialLinkClick(event, launch.twitter);
-                                            }}
-                                        />
-                                    )}
-
-                                    {launch?.discord && (
-                                        <DiscordIcon
-                                            onClick={(event) => {
-                                                handleSocialLinkClick(event, launch.discord);
-                                            }}
-                                        />
-                                    )}
-                                </CardBodySocialDiv>
-
-                                <div
-                                    style={{
-                                        display: 'flex',
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        gap: '10px',
-                                        fontSize: '1rem',
-                                    }}
-                                >
-                                    <span>{launch?.description}</span>
-                                </div>
-                            </div>
-                        </LaunchDetailsHeaderLeft>
-                    </LaunchDetailsHeader>
-
-                    <LaunchDetailsBody>
-                        <LaunchDetailsBodyItem>
-                            <span>Token Address</span>
-                            <span
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    gap: '10px',
-                                    fontSize: '1rem',
-                                }}
-                            >
-                                {launch?.mint_address?.slice(0, 8)}...{launch?.mint_address?.slice(-8)}
-                                <GoLinkExternal
-                                    onClick={() => {
-                                        window.open(`https://solscan.io/token/${launch?.mint_address}`, '_blank');
-                                    }}
-                                    style={{
-                                        cursor: 'pointer',
-                                    }}
-                                />
-                            </span>
-                        </LaunchDetailsBodyItem>
-
-                        <LaunchDetailsBodyItem>
-                            <span>Price</span>
-                            <span>{launch?.price / LAMPORTS_PER_SOL} SOL</span>
-                        </LaunchDetailsBodyItem>
-
-                        <LaunchDetailsBodyItem>
-                            <span>Max Supply</span>
-                            <span>
-                                {launch?.max_supply?.toLocaleString('en-US')} {launch?.symbol}
-                            </span>
-                        </LaunchDetailsBodyItem>
-
-                        <LaunchDetailsBodyItem>
-                            <span>Current Supply</span>
-                            <span>
-                                {launch?.current_supply?.toLocaleString('en-US')} {launch?.symbol}
-                            </span>
-                        </LaunchDetailsBodyItem>
-
-                        <LaunchDetailsBodyItem>
-                            <span>Premint</span>
-                            <span>
-                                {launch?.premint?.toLocaleString('en-US')} {launch?.symbol}
-                            </span>
-                        </LaunchDetailsBodyItem>
-
-                        <LaunchDetailsBodyItem>
-                            <span>Presale Start Time</span>
-                            <span>{new Date(launch?.start_date)?.toUTCString()}</span>
-                        </LaunchDetailsBodyItem>
-
-                        <LaunchDetailsBodyItem>
-                            <span>Presale End Time</span>
-                            <span>{new Date(launch?.end_date)?.toUTCString()}</span>
-                        </LaunchDetailsBodyItem>
-                    </LaunchDetailsBody>
-                </LaunchDetails>
-            </ContainerLeft>
-
-            <ContainerRight>
-                <LaunchMintDetails>
-                    <MintDetailsInner>
-                        <MintDetailsCountdownDiv>
-                            <span>{getLaunchStatus()}</span>
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    gap: '10px',
-                                    fontSize: '1rem',
-                                }}
-                            >
-                                {countdown.split(' ').map((item: any, index: any) => (
-                                    <span
-                                        key={index}
+                                    <div
                                         style={{
                                             display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            backgroundColor: '#272727',
-                                            padding: '10px',
-                                            borderRadius: '5px',
-                                            minWidth: '50px',
+                                            flexDirection: 'column',
+                                            alignItems: 'flex-start',
+                                            justifyContent: 'flex-start',
+                                            gap: '10px',
+                                            fontSize: '1.5rem',
                                         }}
                                     >
-                                        {item}
-                                    </span>
-                                ))}
-                            </div>
-                        </MintDetailsCountdownDiv>
+                                        <span>
+                                            {launch?.name} [{launch.symbol}]
+                                        </span>
 
-                        <Box sx={{ width: '310px', position: 'relative' }}>
-                            <LinearProgress
-                                variant="determinate"
-                                value={(launch?.current_supply / Number(launch?.max_supply)) * 100}
-                                sx={{
-                                    height: 20,
-                                    borderRadius: 1,
-                                    [`&.${linearProgressClasses.colorPrimary}`]: {
-                                        backgroundColor: '#4b4b4b',
-                                    },
-                                    [`& .${linearProgressClasses.bar}`]: {
-                                        borderRadius: 1,
-                                        background: 'linear-gradient(90deg, #038518 0%, #0fb300 100%)',
-                                    },
-                                }}
-                            />
+                                        <CardBodySocialDiv
+                                            style={{
+                                                display: 'flex',
+                                                flexDirection: 'row',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                gap: '10px',
+                                                fontSize: '1rem',
+                                            }}
+                                        >
+                                            {launch?.website && (
+                                                <BsGlobe
+                                                    onClick={(event) => {
+                                                        handleSocialLinkClick(event, launch.website);
+                                                    }}
+                                                />
+                                            )}
 
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    width: '100%',
-                                    zIndex: 10,
-                                    position: 'absolute',
-                                    bottom: '50%',
-                                    left: '50%',
-                                    transform: 'translate(-50%, -50%)',
-                                    fontSize: '0.5rem',
-                                    color: 'white', // Choose color that contrasts with the progress bar
-                                }}
-                            >
-                                {launch?.current_supply?.toLocaleString('en-US')} /{' '}
-                                {launch?.max_supply?.toLocaleString('en-US')}
-                            </div>
+                                            {launch?.twitter && (
+                                                <TwitterIcon
+                                                    onClick={(event) => {
+                                                        handleSocialLinkClick(event, launch.twitter);
+                                                    }}
+                                                />
+                                            )}
 
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                    fontSize: '1rem',
-                                }}
-                            >
-                                <span>0%</span>
-                                <span>100%</span>
-                            </div>
-                        </Box>
+                                            {launch?.discord && (
+                                                <DiscordIcon
+                                                    onClick={(event) => {
+                                                        handleSocialLinkClick(event, launch.discord);
+                                                    }}
+                                                />
+                                            )}
+                                        </CardBodySocialDiv>
 
-                        {status === 'live' && (
-                            <>
-                                {loading && (
-                                    <CircularProgress
+                                        <div
+                                            style={{
+                                                display: 'flex',
+                                                flexDirection: 'row',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                gap: '10px',
+                                                fontSize: '1rem',
+                                            }}
+                                        >
+                                            <span>{launch?.description}</span>
+                                        </div>
+                                    </div>
+                                </LaunchDetailsHeaderLeft>
+                            </LaunchDetailsHeader>
+
+                            <LaunchDetailsBody>
+                                <LaunchDetailsBodyItem>
+                                    <span>Token Address</span>
+                                    <span
                                         style={{
-                                            color: '#9ba3af',
+                                            display: 'flex',
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            gap: '10px',
+                                            fontSize: '1rem',
+                                        }}
+                                    >
+                                        {launch?.mint_address?.slice(0, 8)}...{launch?.mint_address?.slice(-8)}
+                                        <GoLinkExternal
+                                            onClick={() => {
+                                                window.open(
+                                                    `https://solscan.io/token/${launch?.mint_address}`,
+                                                    '_blank'
+                                                );
+                                            }}
+                                            style={{
+                                                cursor: 'pointer',
+                                            }}
+                                        />
+                                    </span>
+                                </LaunchDetailsBodyItem>
+
+                                <LaunchDetailsBodyItem>
+                                    <span>Price</span>
+                                    <span>{launch?.price / LAMPORTS_PER_SOL} SOL</span>
+                                </LaunchDetailsBodyItem>
+
+                                <LaunchDetailsBodyItem>
+                                    <span>Max Supply</span>
+                                    <span>
+                                        {launch?.max_supply?.toLocaleString('en-US')} {launch?.symbol}
+                                    </span>
+                                </LaunchDetailsBodyItem>
+
+                                <LaunchDetailsBodyItem>
+                                    <span>Current Supply</span>
+                                    <span>
+                                        {launch?.current_supply?.toLocaleString('en-US')} {launch?.symbol}
+                                    </span>
+                                </LaunchDetailsBodyItem>
+
+                                <LaunchDetailsBodyItem>
+                                    <span>Premint</span>
+                                    <span>
+                                        {launch?.premint?.toLocaleString('en-US')} {launch?.symbol}
+                                    </span>
+                                </LaunchDetailsBodyItem>
+
+                                <LaunchDetailsBodyItem>
+                                    <span>Presale Start Time</span>
+                                    <span>{new Date(launch?.start_date)?.toUTCString()}</span>
+                                </LaunchDetailsBodyItem>
+
+                                <LaunchDetailsBodyItem>
+                                    <span>Presale End Time</span>
+                                    <span>{new Date(launch?.end_date)?.toUTCString()}</span>
+                                </LaunchDetailsBodyItem>
+                            </LaunchDetailsBody>
+                        </LaunchDetails>
+                    </ContainerLeft>
+
+                    <ContainerRight>
+                        <LaunchMintDetails>
+                            <MintDetailsInner>
+                                <MintDetailsCountdownDiv>
+                                    <span>{getLaunchStatus()}</span>
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            gap: '10px',
+                                            fontSize: '1rem',
+                                        }}
+                                    >
+                                        {countdown.split(' ').map((item: any, index: any) => (
+                                            <span
+                                                key={index}
+                                                style={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    backgroundColor: '#272727',
+                                                    padding: '10px',
+                                                    borderRadius: '5px',
+                                                    minWidth: '50px',
+                                                }}
+                                            >
+                                                {item}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </MintDetailsCountdownDiv>
+
+                                <Box sx={{ width: '310px', position: 'relative' }}>
+                                    <LinearProgress
+                                        variant="determinate"
+                                        value={(launch?.current_supply / Number(launch?.max_supply)) * 100}
+                                        sx={{
+                                            height: 20,
+                                            borderRadius: 1,
+                                            [`&.${linearProgressClasses.colorPrimary}`]: {
+                                                backgroundColor: '#4b4b4b',
+                                            },
+                                            [`& .${linearProgressClasses.bar}`]: {
+                                                borderRadius: 1,
+                                                background: 'linear-gradient(90deg, #038518 0%, #0fb300 100%)',
+                                            },
                                         }}
                                     />
-                                )}
 
-                                {!loading && connected && (
-                                    <AmountDiv>
-                                        <span>Amount to Mint</span>
-                                        <MintInput
-                                            disabled={status !== 'live'}
-                                            type={'number'}
-                                            placeholder="Enter Amount"
-                                            value={mintAmount}
-                                            onChange={(e: any) => setMintAmount(e.target.value)}
-                                        />
-                                        <span>
-                                            Total: {mintAmount > 0 ? (mintAmount * launch.price) / LAMPORTS_PER_SOL : 0}{' '}
-                                            SOL
-                                        </span>
-                                        <MintButton disabled={status !== 'live'} onClick={handleMint}>
-                                            Mint
-                                        </MintButton>
-                                    </AmountDiv>
-                                )}
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            width: '100%',
+                                            zIndex: 10,
+                                            position: 'absolute',
+                                            bottom: '50%',
+                                            left: '50%',
+                                            transform: 'translate(-50%, -50%)',
+                                            fontSize: '0.5rem',
+                                            color: 'white', // Choose color that contrasts with the progress bar
+                                        }}
+                                    >
+                                        {launch?.current_supply?.toLocaleString('en-US')} /{' '}
+                                        {launch?.max_supply?.toLocaleString('en-US')}
+                                    </div>
 
-                                {!loading && !connected && <ConnectWallet />}
-                            </>
-                        )}
-                    </MintDetailsInner>
-                </LaunchMintDetails>
-            </ContainerRight>
-        </Container>
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-between',
+                                            fontSize: '1rem',
+                                        }}
+                                    >
+                                        <span>0%</span>
+                                        <span>100%</span>
+                                    </div>
+                                </Box>
+
+                                {status === 'live' && (
+                                    <>
+                                        {loading && (
+                                            <CircularProgress
+                                                style={{
+                                                    color: '#9ba3af',
+                                                }}
+                                            />
+                                        )}
+
+                                        {!loading && connected && (
+                                            <AmountDiv>
+                                                <span>Amount to Mint</span>
+                                                <MintInput
+                                                    disabled={status !== 'live'}
+                                                    type={'number'}
+                                                    placeholder="Enter Amount"
+                                                    value={mintAmount}
+                                                    onChange={(e: any) => setMintAmount(e.target.value)}
+                                                />
+                                                <span>
+                                                    Total:{' '}
+                                                    {mintAmount > 0
+                                                        ? (mintAmount * launch.price) / LAMPORTS_PER_SOL
+                                                        : 0}{' '}
+                                                    SOL
+                                                </span>
+                                                <MintButton disabled={status !== 'live'} onClick={handleMint}>
+                                                    Mint
+                                                </MintButton>
+                                            </AmountDiv>
+                                        )}
+
+                                        {!loading && !connected && <ConnectWallet />}
+                                    </>
+                                )}
+                            </MintDetailsInner>
+                        </LaunchMintDetails>
+                    </ContainerRight>
+                </Container>
+            )}
+        </>
     );
 }
 
