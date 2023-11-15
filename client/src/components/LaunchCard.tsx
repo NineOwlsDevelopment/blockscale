@@ -172,8 +172,8 @@ export default function LaunchCard({ launch }: any) {
                                     color: 'white',
                                 }}
                             >
-                                {launch.current_supply.toLocaleString('en-US')} /{' '}
-                                {launch.max_supply.toLocaleString('en-US')}
+                                {launch?.current_supply.toLocaleString('en-US')} /{' '}
+                                {launch?.max_supply.toLocaleString('en-US')}
                             </div>
                         </Box>
                     </CardBodyItem>

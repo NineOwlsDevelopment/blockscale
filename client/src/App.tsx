@@ -2,12 +2,7 @@ import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { useEffect } from 'react';
-import {
-    UnsafeBurnerWalletAdapter,
-    PhantomWalletAdapter,
-    SolflareWalletAdapter,
-    SalmonWalletAdapter,
-} from '@solana/wallet-adapter-wallets';
+import { PhantomWalletAdapter, SolflareWalletAdapter, SalmonWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { clusterApiUrl } from '@solana/web3.js';
 import React, { FC, ReactNode, useMemo } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -39,12 +34,7 @@ const Context: FC<{ children: ReactNode }> = ({ children }) => {
     const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
     const wallets = useMemo(
-        () => [
-            new UnsafeBurnerWalletAdapter(),
-            new PhantomWalletAdapter(),
-            new SolflareWalletAdapter(),
-            new SalmonWalletAdapter(),
-        ],
+        () => [new PhantomWalletAdapter(), new SolflareWalletAdapter(), new SalmonWalletAdapter()],
         [network]
     );
 

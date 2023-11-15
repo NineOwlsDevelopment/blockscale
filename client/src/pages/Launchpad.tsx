@@ -283,7 +283,7 @@ export default function Launchpad() {
                                         fontSize: '1rem',
                                     }}
                                 >
-                                    {launch.website && (
+                                    {launch?.website && (
                                         <BsGlobe
                                             onClick={(event) => {
                                                 handleSocialLinkClick(event, launch.website);
@@ -291,7 +291,7 @@ export default function Launchpad() {
                                         />
                                     )}
 
-                                    {launch.twitter && (
+                                    {launch?.twitter && (
                                         <TwitterIcon
                                             onClick={(event) => {
                                                 handleSocialLinkClick(event, launch.twitter);
@@ -299,7 +299,7 @@ export default function Launchpad() {
                                         />
                                     )}
 
-                                    {launch.discord && (
+                                    {launch?.discord && (
                                         <DiscordIcon
                                             onClick={(event) => {
                                                 handleSocialLinkClick(event, launch.discord);
@@ -318,7 +318,7 @@ export default function Launchpad() {
                                         fontSize: '1rem',
                                     }}
                                 >
-                                    <span>{launch.description}</span>
+                                    <span>{launch?.description}</span>
                                 </div>
                             </div>
                         </LaunchDetailsHeaderLeft>
@@ -337,10 +337,10 @@ export default function Launchpad() {
                                     fontSize: '1rem',
                                 }}
                             >
-                                {launch.mint_address?.slice(0, 8)}...{launch.mint_address?.slice(-8)}
+                                {launch?.mint_address?.slice(0, 8)}...{launch?.mint_address?.slice(-8)}
                                 <GoLinkExternal
                                     onClick={() => {
-                                        window.open(`https://solscan.io/token/${launch.mint_address}`, '_blank');
+                                        window.open(`https://solscan.io/token/${launch?.mint_address}`, '_blank');
                                     }}
                                     style={{
                                         cursor: 'pointer',
@@ -351,38 +351,38 @@ export default function Launchpad() {
 
                         <LaunchDetailsBodyItem>
                             <span>Price</span>
-                            <span>{launch.price / LAMPORTS_PER_SOL} SOL</span>
+                            <span>{launch?.price / LAMPORTS_PER_SOL} SOL</span>
                         </LaunchDetailsBodyItem>
 
                         <LaunchDetailsBodyItem>
                             <span>Max Supply</span>
                             <span>
-                                {launch.max_supply?.toLocaleString('en-US')} {launch.symbol}
+                                {launch?.max_supply?.toLocaleString('en-US')} {launch?.symbol}
                             </span>
                         </LaunchDetailsBodyItem>
 
                         <LaunchDetailsBodyItem>
                             <span>Current Supply</span>
                             <span>
-                                {launch.current_supply?.toLocaleString('en-US')} {launch.symbol}
+                                {launch?.current_supply?.toLocaleString('en-US')} {launch?.symbol}
                             </span>
                         </LaunchDetailsBodyItem>
 
                         <LaunchDetailsBodyItem>
                             <span>Premint</span>
                             <span>
-                                {launch.premint?.toLocaleString('en-US')} {launch.symbol}
+                                {launch?.premint?.toLocaleString('en-US')} {launch?.symbol}
                             </span>
                         </LaunchDetailsBodyItem>
 
                         <LaunchDetailsBodyItem>
                             <span>Presale Start Time</span>
-                            <span>{new Date(launch.start_date)?.toUTCString()}</span>
+                            <span>{new Date(launch?.start_date)?.toUTCString()}</span>
                         </LaunchDetailsBodyItem>
 
                         <LaunchDetailsBodyItem>
                             <span>Presale End Time</span>
-                            <span>{new Date(launch.end_date)?.toUTCString()}</span>
+                            <span>{new Date(launch?.end_date)?.toUTCString()}</span>
                         </LaunchDetailsBodyItem>
                     </LaunchDetailsBody>
                 </LaunchDetails>
@@ -425,7 +425,7 @@ export default function Launchpad() {
                         <Box sx={{ width: '310px', position: 'relative' }}>
                             <LinearProgress
                                 variant="determinate"
-                                value={(launch.current_supply / Number(launch.max_supply)) * 100}
+                                value={(launch?.current_supply / Number(launch?.max_supply)) * 100}
                                 sx={{
                                     height: 20,
                                     borderRadius: 1,
@@ -455,8 +455,8 @@ export default function Launchpad() {
                                     color: 'white', // Choose color that contrasts with the progress bar
                                 }}
                             >
-                                {launch.current_supply?.toLocaleString('en-US')} /{' '}
-                                {launch.max_supply?.toLocaleString('en-US')}
+                                {launch?.current_supply?.toLocaleString('en-US')} /{' '}
+                                {launch?.max_supply?.toLocaleString('en-US')}
                             </div>
 
                             <div
