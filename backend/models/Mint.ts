@@ -51,7 +51,7 @@ export default class Mint {
     try {
       const connection = new Connection(
         process.env.SOLANA_RPC || "",
-        "finalized"
+        "confirmed"
       );
 
       const new_tx: any = Transaction.from(signature);
@@ -68,7 +68,7 @@ export default class Mint {
         signature: tx_hash,
       });
 
-      if (!is_confirmed) {
+      if (!is_confirmed || is_confirmed.value.err) {
         throw new Error("Transaction not confirmed.");
       }
 
@@ -76,7 +76,7 @@ export default class Mint {
       let parsedTx: any = null;
 
       const interval = setInterval(async () => {
-        parsedTx = await connection.getParsedTransaction(tx_hash, "finalized");
+        parsedTx = await connection.getParsedTransaction(tx_hash, "confirmed");
 
         if (parsedTx) {
           clearInterval(interval);
@@ -123,12 +123,12 @@ export default class Mint {
         throw new Error("Invalid TX. Fee + Amount does not match total.");
       }
 
-      // console.log("Signature: ", tx_hash);
-      // console.log("From: ", from_key.toString());
-      // console.log("To: ", to_key.toString());
-      // console.log("Fee Key: ", fee_key.toString());
-      // console.log("Fee Amount: ", fee);
-      // console.log("Amount", amount);
+      console.log("Signature: ", tx_hash);
+      console.log("From: ", from_key.toString());
+      console.log("To: ", to_key.toString());
+      console.log("Fee Key: ", fee_key.toString());
+      console.log("Fee Amount: ", fee);
+      console.log("Amount", amount);
 
       return tx_hash;
     } catch (error: any) {
