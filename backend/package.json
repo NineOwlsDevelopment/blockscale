@@ -19,7 +19,8 @@
   },
   "scripts": {
     "start": "ts-node index.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "migrate": "npx prisma migrate dev --name init && npx prisma generate"
   },
   "dependencies": {
     "@metaplex-foundation/js": "^0.19.5",
